@@ -11,9 +11,16 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Department>()
+            .HasKey(d => d.DepartmentId);
+
+        modelBuilder.Entity<Department>()
             .HasOne(d => d.ParentDepartment)
             .WithMany(d => d.SubDepartments)
-            .HasForeignKey(d => d.ParentDepartmentId);
+            .HasForeignKey(d => d.ParentDepartmentId)
+            .OnDelete(DeleteBehavior.Restrict); 
+
+        modelBuilder.Entity<EmailReminder>()
+            .HasKey(e => e.EmailId);
     }
 
 }
